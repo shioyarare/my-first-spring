@@ -9,7 +9,7 @@ public class PostsController {
        return "get /posts";
     }
 
-    @RequestMapping("/posts/{postId}")
+    @RequestMapping(value = "/posts/{postId}", method = RequestMethod.GET)
     public String showPost(@PathVariable("postId") String postId) {
        return "get /posts id = " + postId;
     }
@@ -17,5 +17,15 @@ public class PostsController {
     @PostMapping("/posts")
     public String setPost() {
         return "post /posts";
+    }
+
+    @RequestMapping(value = "/posts/{postId}", method = RequestMethod.PUT)
+    public String updatePost() {
+        return "put /posts";
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    public String deletePost(@PathVariable("postId") String postId) {
+        return "delete /posts id = " + postId;
     }
 }
