@@ -1,6 +1,7 @@
 package com.example.restservice.posts;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,11 +10,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.Media;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 public class PostsController {
+
+    @Autowired
+    PostService postService = new PostService();
     HttpHeaders headers = new HttpHeaders();
     PostsController() {
         headers.setContentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8));
@@ -22,9 +28,8 @@ public class PostsController {
     // get index
     @GetMapping("/posts")
     @JsonValue
-    public ResponseEntity<Map> indexPost() {
-        Map<String, Object> map = new LinkedHashMap<>();
-        return new ResponseEntity<Map>(map, headers, HttpStatus.OK);
+    public ResponseEntity<List> indexPost() {
+        return new ResponseEntity<List>(postService.searchAll(), headers, HttpStatus.OK);
     }
 
     // get show
@@ -35,7 +40,8 @@ public class PostsController {
 
     // post
     @PostMapping("/posts")
-    public String setPost() {
+    public String setPost(@RequestParam("name") String name, @RequestParam("body") String body) {
+        postService.create(name, body);
         return "post /posts";
     }
 
